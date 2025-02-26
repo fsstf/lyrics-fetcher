@@ -13,11 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConsumoAPI {
-    @Value("${TOKEN}")
-    private String TOKEN;
+
     private String URL_BASE = "https://api.genius.com/search?q=";
 
-    public List<String> obtenerDatos(String nombre){
+    public List<String> obtenerDatos(String nombre,String TOKEN){
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
