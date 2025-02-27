@@ -16,7 +16,7 @@ public class CancionController {
     CancionService cancionService;
 
     @GetMapping("/songs")
-    public List<DatosCancion> bucarCancion(@RequestParam String name){
+    public List<DatosCancion> buscarCancion(@RequestParam String name){
         return cancionService.buscarCanciones(name);
     }
 
