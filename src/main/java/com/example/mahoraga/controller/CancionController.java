@@ -4,6 +4,7 @@ import com.example.mahoraga.model.DatosCancion;
 import com.example.mahoraga.model.DatosCancionLetra;
 import com.example.mahoraga.service.CancionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,13 +16,14 @@ public class CancionController {
     @Autowired
     CancionService cancionService;
 
-    @GetMapping("/songs")
-    public List<DatosCancion> buscarCancion(@RequestParam String name){
-        return cancionService.buscarCanciones(name);
+    @GetMapping("/song")
+    public ResponseEntity<List<DatosCancion>> buscarCancion(@RequestParam String name){
+        List<DatosCancion> canciones = cancionService.buscarCanciones(name);
+        return ResponseEntity.ok(canciones);
     }
 
-    @PostMapping("/song")
-    public DatosCancionLetra obternerLetra(@RequestBody DatosCancion datosCancion){
-        return cancionService.obtenerLetra(datosCancion);
+    @GetMapping("/song/{id}")
+    public DatosCancionLetra obternerLetra(@PathVariable Long id){
+        return cancionService.obtenerLetra(id);
     }
 }

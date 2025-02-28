@@ -3,7 +3,10 @@ package com.example.mahoraga.service;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
+
 
 public class ConsumoLetra {
 
@@ -19,17 +22,24 @@ public class ConsumoLetra {
                     .header("Referer", "https://genius.com/")
                     .get();
 
-            // Extraer la letra de la canción del HTML
-            Element lyricsElement = doc.select("div.Lyrics-sc-37019ee2-1.jRTEBZ[data-lyrics-container='true']").first();
-            if (lyricsElement == null) {
-                throw new RuntimeException("No se pudo encontrar la letra en la página");
+            // Extraer TODA la letra de la canción
+            Elements lyricsElements = doc.select("div[data-lyrics-container='true']");
+
+            // Si no se encuentran los elementos, devolver un mensaje
+            if (lyricsElements.isEmpty()) {
+                return "Letra no encontrada.";
             }
 
-            // Devolver la letra de la canción
-            return lyricsElement.text();
+            // Concatenar todas las partes de la letra
+            StringBuilder letraCompleta = new StringBuilder();
+            for (Element element : lyricsElements) {
+                letraCompleta.append(element.text()).append("\n\n");
+            }
+
+            return letraCompleta.toString().trim(); // Devolver la letra completa
 
         } catch (IOException e) {
-            throw new RuntimeException("Error al obtener la letra: " + e.getMessage(), e);
+            return "Error al obtener la letra: " + e.getMessage();
         }
     }
 }
